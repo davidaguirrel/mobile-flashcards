@@ -7,6 +7,7 @@ import reducer from './reducers'
 import middleware from './middleware'
 import DeckView from './components/DeckView'
 import NewCard from './components/NewCard'
+import NewDeck from './components/NewDeck'
 
 const store = createStore(reducer, middleware)
 
@@ -16,7 +17,7 @@ export default class App extends React.Component {
       <Provider store={store}>
       {/* <Provider> */}
         <View style={styles.container}>
-          <NewCard />
+          <NewDeck />
         </View>
       </Provider>
     )
@@ -26,8 +27,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    // backgroundColor: 'blue',
+    alignItems: 'stretch',
     justifyContent: 'center',
   },
 });

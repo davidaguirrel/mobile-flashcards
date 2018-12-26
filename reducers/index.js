@@ -1,5 +1,4 @@
 import { RECEIVE_DECKS, SAVE_DECK, ADD_CARD_TO_DECK } from '../actions'
-import { AsyncStorage } from 'react-native'
 export const DECK_STORAGE_KEY = 'MobileFlashcards:deck'
 
 const initialDeck = {
@@ -25,10 +24,13 @@ function decks (state = initialDeck, action) {
         ...action.decks
       }
     case SAVE_DECK :
+      let formattedTitle = action.title.replace(/\w+/g, (txt) => (
+        txt.charAt(0).toUpperCase() + txt.slice(1)
+      )).replace(/\s/g, '')
+
       return {
         ...state,
-        // TODO: CAMEL CASE THE TITLE
-        [action.title]: {
+        [formattedTitle]: {
           title: action.title
         }
       }

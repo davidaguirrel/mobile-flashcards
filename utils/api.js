@@ -1,10 +1,9 @@
 import { AsyncStorage } from 'react-native'
-import { getDecks, DECK_STORAGE_KEY } from './helpers';
+const DECK_STORAGE_KEY = 'MobileFlashcards:deck'
 
-export function fetchInitialDecks () {
+export function getDecks () {
   return AsyncStorage.getItem(DECK_STORAGE_KEY)
     // .then(results => console.log('api', results))
-    // .then(getDecks)
     .then(results => console.log('results', JSON.parse(results)))
     // .then(results => console.log('results', results))
 }
@@ -19,4 +18,19 @@ export function addCardToDeck (title, card) {
   }))
   // return AsyncStorage.getItem(DECK_STORAGE_KEY)
     // .then(results => console.log('json', JSON.parse(results)))
+}
+
+export function saveDeckTitle (title) {
+  console.log(title)
+  let formattedTitle = title.replace(/\w+/g, (txt) => (
+    txt.charAt(0).toUpperCase() + txt.slice(1)
+  )).replace(/\s/g, '')
+
+  return AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({
+    [formattedTitle]: {
+      title
+    }
+  }))
+    .then(() => AsyncStorage.getItem(DECK_STORAGE_KEY)
+      .then(results => console.log('results', JSON.parse(results))))
 }
