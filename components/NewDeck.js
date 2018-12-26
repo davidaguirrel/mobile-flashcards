@@ -17,7 +17,6 @@ class NewDeck extends Component {
     const { dispatch } = this.props
     const newTitle = this.state.newTitle
     dispatch(handleAddNewDeck(newTitle))
-    // dispatch(saveDeck(newTitle))
 
     this.setState({
       newTitle: ''
@@ -38,10 +37,11 @@ class NewDeck extends Component {
         >
         </TextInput>
         <TouchableOpacity
-          style={styles.submitBtn}
+          style={[styles.submitBtn, !this.state.newTitle ? styles.submitDisabled : {}]}
           onPress={this.submit}
+          disabled={!this.state.newTitle}
           >
-            <Text>CREATE DECK</Text>
+            <Text style={!this.state.newTitle ? {opacity: 0.2} : {}}>CREATE DECK</Text>
         </TouchableOpacity>
       </View>
     )
@@ -79,6 +79,11 @@ const styles = StyleSheet.create({
     margin: 5,
     width: 200,
     alignItems: 'center'
+  },
+  submitDisabled: {
+    // borderWidth: 10,
+    // opacity: 0.5
+    borderColor: 'rgba(0, 0, 0, 0.2)',
   }
 })
 
