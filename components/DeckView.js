@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps (decks) {
-  // console.log('mapState', decks)
+  // TODO: RETRIEVE A SINGLE DECK ID
   return {
     decks: Object.is(decks, {}) 
       ? null

@@ -27,7 +27,7 @@ class Dashboard extends Component {
     const { decks } = this.props
     // console.log('render', decks.length)
     return (
-      <View style={{paddingTop: 25}}>
+      <View style={styles.mainView}>
         {decks.length > 0
           ? decks.map((deck, i) => (
               <TouchableOpacity key={i} style={styles.deckList} >
@@ -51,14 +51,20 @@ class Dashboard extends Component {
 }
 
 const styles = StyleSheet.create({
-  deckList: {
+  mainView: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 23,
+  },
+  deckList: {
+    // flex: 1,
     borderWidth: 1,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     width: 300,
-    // height: 100,
+    height: 200,
     backgroundColor: '#ccc',
     marginBottom: 5,
     // shadowRadius: 3,

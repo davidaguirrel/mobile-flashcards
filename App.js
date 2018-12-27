@@ -8,8 +8,10 @@ import middleware from './middleware'
 import DeckView from './components/DeckView'
 import NewCard from './components/NewCard'
 import NewDeck from './components/NewDeck'
+import Quiz from './components/Quiz';
 
 const store = createStore(reducer, middleware)
+
 
 export default class App extends React.Component {
   render() {
@@ -17,7 +19,7 @@ export default class App extends React.Component {
       <Provider store={store}>
       {/* <Provider> */}
         <View style={styles.container}>
-          <NewDeck />
+          <Quiz />
         </View>
       </Provider>
     )
@@ -27,8 +29,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'blue',
     alignItems: 'stretch',
     justifyContent: 'center',
+    // backgroundColor: 'gray'
   },
-});
+})
