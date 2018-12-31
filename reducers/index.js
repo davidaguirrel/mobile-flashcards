@@ -6,8 +6,38 @@ const initialDeck = {
     title: 'Deportes',
     questions: [
       {
-        question: 'q1',
-        answer: 'a1'
+        question: 'Deportes.q1',
+        answer: 'Deportes.a1'
+      },
+      {
+        question: 'Deportes.q2',
+        answer: 'Deportes.a2'
+      }
+    ]
+  },
+  Viajes: {
+    title: 'Viajes',
+    questions: [
+      {
+        question: 'Viajes.q1',
+        answer: 'Viajes.a1'
+      },
+      {
+        question: 'Viajes.q2',
+        answer: 'Viajes.a2'
+      },
+      {
+        question: 'Viajes.q3',
+        answer: 'Viajes.a3'
+      }
+    ]
+  },
+  Fotos: {
+    title: 'Fotos',
+    questions: [
+      {
+        question: 'Fotos.q1',
+        answer: 'Fotos.a1'
       }
     ]
   }
@@ -31,7 +61,8 @@ function decks (state = initialDeck, action) {
       return {
         ...state,
         [formattedTitle]: {
-          title: action.title
+          title: action.title,
+          questions: []
         }
       }
     case ADD_CARD_TO_DECK :

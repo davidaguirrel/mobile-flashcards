@@ -1,45 +1,44 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
-// import { decks } from '../utils/helper'
-import { fetchInitialDecks } from '../utils/api'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, AsyncStorage } from 'react-native'
 import { handleInitialData } from '../actions'
-import { AsyncStorage, Alert } from 'react-native'
 
 class Dashboard extends Component {
   componentDidMount() {
     const { dispatch } = this.props
 
-    // fetchInitialDecks()
-    //   .then(decks => console.log('results', decks))
-    //   .then(decks => dispatch(receiveDecks(decks)))
-
-
     dispatch(handleInitialData())
     // AsyncStorage.clear()
   }
 
-  openDeck() {
-    Alert.alert('ALERTAAAAA')
+  renderItem = ({ item }) => {
+    const { navigation } = this.props
+    const deck = item
+    console.log('deck', deck)
+    return (
+      <TouchableOpacity style={styles.deckList} onPress={() => navigation.navigate('DeckView', { deck })}>
+        <Text style={styles.title}>
+          {deck.title}
+        </Text>
+        <Text style={styles.deckInfo}>
+          {deck.questions.length} cards
+        </Text>
+      </TouchableOpacity>
+    )
   }
 
   render () {
     const { decks } = this.props
-    // console.log('render', decks.length)
+
     return (
       <View style={styles.mainView}>
         {decks.length > 0
-          ? decks.map((deck, i) => (
-              <TouchableOpacity key={i} style={styles.deckList} >
-                <Text style={styles.title}>
-                  {deck.title}
-                </Text>
-                <Text style={styles.deckInfo}>
-                  {deck.questions.length} cards
-                </Text>
-              </TouchableOpacity>
-            ))
-          : <TouchableOpacity style={styles.noDeck} onPress={this.openDeck}>
+          ? <FlatList
+              data={decks}
+              renderItem={this.renderItem}
+              keyExtractor={item => item.title}
+            />
+          : <TouchableOpacity style={styles.noDeck}>
               <Text>
                 PLEASE CREATE A DECK
               </Text>
@@ -53,12 +52,13 @@ class Dashboard extends Component {
 const styles = StyleSheet.create({
   mainView: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 23,
+    marginTop: 20,
+    // backgroundColor: 'red'
   },
   deckList: {
-    // flex: 1,
+    flex: 1,
     borderWidth: 1,
     borderRadius: 10,
     justifyContent: 'center',
@@ -67,13 +67,6 @@ const styles = StyleSheet.create({
     height: 200,
     backgroundColor: '#ccc',
     marginBottom: 5,
-    // shadowRadius: 3,
-    // shadowOpacity: 0.8,
-    // shadowColor: 'red',
-    // shadowOffset: {
-    //   width: 5,
-    //   height: 5
-    // },
   },
   title: {
     // flex: 2,
@@ -82,8 +75,6 @@ const styles = StyleSheet.create({
   deckInfo: {
     // flex: 1,
     fontSize: 25,
-    // justifyContent: 'flex-end',
-    // alignSelf: 'flex-end'
   },
   noDeck: {
     // flex: 1,

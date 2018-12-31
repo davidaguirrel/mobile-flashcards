@@ -10,7 +10,7 @@ export function handleInitialData() {
     // console.log(dispatch)
     return getDecks()
       .then((decks) => (
-        // console.log('decks', decks)
+        // console.log('decks', decks))
         dispatch(receiveDecks(decks)))
       )
   }

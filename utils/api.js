@@ -4,8 +4,8 @@ const DECK_STORAGE_KEY = 'MobileFlashcards:deck'
 export function getDecks () {
   return AsyncStorage.getItem(DECK_STORAGE_KEY)
     // .then(results => console.log('api', results))
-    .then(results => console.log('results', JSON.parse(results)))
-    // .then(results => console.log('results', results))
+    // .then(results => console.log('results', JSON.parse(results)))
+    .then(results => JSON.parse(results))
 }
 
 export function addCardToDeck (title, card) {
@@ -28,9 +28,10 @@ export function saveDeckTitle (title) {
 
   return AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({
     [formattedTitle]: {
-      title
+      title,
+      questions: []
     }
   }))
-    .then(() => AsyncStorage.getItem(DECK_STORAGE_KEY)
-      .then(results => console.log('results', JSON.parse(results))))
+    // .then(() => AsyncStorage.getItem(DECK_STORAGE_KEY)
+      // .then(results => console.log('results saveDeckTitle', JSON.parse(results))))
 }

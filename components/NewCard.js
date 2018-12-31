@@ -3,12 +3,10 @@ import { connect } from 'react-redux'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native'
 import { Formik } from 'formik'
 import { handleAddCardToDeck, saveCard, handleInitialData } from '../actions';
+import { NavigationActions } from 'react-navigation'
 
 class NewCard extends Component {
-  componentDidMount() {
-    // AsyncStorage.clear()
-    this.props.dispatch(handleInitialData())
-  }
+
   state = {
     question: '',
     answer: ''
@@ -26,7 +24,9 @@ class NewCard extends Component {
   }
 
   submit = () => {
-    const { dispatch, title } = this.props
+    const { dispatch, navigation } = this.props
+    const title  = navigation.state.params.title
+    console.log(title)
     const { question, answer } = this.state
     const card = {
       question,
@@ -39,6 +39,8 @@ class NewCard extends Component {
       question: '',
       answer: ''
     })
+
+    navigation.dispatch(NavigationActions.back())
   }
 
   render () {
@@ -66,10 +68,11 @@ class NewCard extends Component {
               >
             </TextInput>
             <TouchableOpacity
-              style={styles.submitBtn}
+              style={[styles.submitBtn, !(this.state.question && this.state.answer) ? styles.submitDisabled : {}]}
+              disabled={!(this.state.question && this.state.answer)}
               onPress={this.submit}
               >
-                <Text>SUBMIT</Text>
+                <Text style={!(this.state.question && this.state.answer) ? {opacity: 0.4} : {}}>SUBMIT</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -116,16 +119,11 @@ const styles = StyleSheet.create({
     margin: 5,
     width: 200,
     alignItems: 'center'
+  },
+  submitDisabled: {
+    borderColor: 'rgba(0, 0, 0, 0.2)',
   }
 })
 
-function mapStateToProps (decks) {
-  const title = 'Deportes'
-  console.log('mapstate', decks)
-  return {
-    title,
-    decks
-  }
-}
 
-export default connect(mapStateToProps)(NewCard)
+export default connect()(NewCard)

@@ -3,33 +3,11 @@ import { connect } from 'react-redux'
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native'
 import { handleInitialData } from '../actions';
 
-//TODO: PASS DECK ID TO THIS COMPONENT
-const myDeck = {
-  Deportes: {
-    title: 'Deportes',
-    questions: [
-      {
-        question: 'deportes.q1',
-        answer: 'deportes.a1'
-      },
-      {
-        question: 'deportes.q2',
-        answer: 'deportes.a2'
-      }
-    ]
-  }
-}
-
 class DeckView extends Component {
-  componentDidMount() {
-    const { dispatch } = this.props
-
-    dispatch(handleInitialData())
-  }
 
   addCard = () => {
-    // Alert.alert('Test')
     // TODO: route to NewCard view
+    this.props.navigation.navigate('NewCard', this.props.navigation.state.params.deck)
   }
 
   startQuiz = () => {
@@ -37,19 +15,19 @@ class DeckView extends Component {
   }
 
   render () {
-    const { decks } = this.props
-    // console.log('decks props', decks)
-
+    const { deck } = this.props
+    // const { navigation } = this.props
+    // console.log(navigation)
     return (
-      <View>
-        {decks &&
+      <View style={styles.container}>
+        {deck &&
           <View>
             <View style={styles.deckInfo}>
               <Text style={{fontSize: 70, textAlign: 'center'}}>
-                {decks.Deportes.title}
+                {deck.title}
               </Text>
               <Text style={{fontSize: 20}}>
-                {decks.Deportes.questions.length} cards
+                {deck.questions.length} cards
               </Text>
             </View>
             <View style={styles.deckMenu}>
@@ -77,6 +55,11 @@ class DeckView extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   deckInfo: {
     flex: 1,
     alignItems: 'center',
@@ -100,12 +83,11 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps (decks) {
-  // TODO: RETRIEVE A SINGLE DECK ID
+function mapStateToProps(state, { navigation }) {
+  console.log('mapstate', navigation)
+  const { deck } = navigation.state.params
   return {
-    decks: Object.is(decks, {}) 
-      ? null
-      : decks
+    deck
   }
 }
 

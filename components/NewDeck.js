@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import { handleAddNewDeck } from '../actions'
+import { NavigationActions } from 'react-navigation'
 
 class NewDeck extends Component {
   state = {
@@ -14,13 +15,15 @@ class NewDeck extends Component {
   }
 
   submit = () => {
-    const { dispatch } = this.props
+    const { dispatch, navigation } = this.props
     const newTitle = this.state.newTitle
     dispatch(handleAddNewDeck(newTitle))
 
     this.setState({
       newTitle: ''
     })
+
+    navigation.dispatch(NavigationActions.back())
   }
 
   render () {
@@ -41,7 +44,7 @@ class NewDeck extends Component {
           onPress={this.submit}
           disabled={!this.state.newTitle}
           >
-            <Text style={!this.state.newTitle ? {opacity: 0.2} : {}}>CREATE DECK</Text>
+            <Text style={!this.state.newTitle ? {opacity: 0.4} : {}}>CREATE DECK</Text>
         </TouchableOpacity>
       </View>
     )
