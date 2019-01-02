@@ -12,12 +12,12 @@ class DeckView extends Component {
 
   startQuiz = () => {
     //TODO: START QUIZ FUNCTIONALITY
+    this.props.navigation.navigate('Quiz', this.props.navigation.state.params)
   }
 
   render () {
     const { deck } = this.props
-    // const { navigation } = this.props
-    // console.log(navigation)
+
     return (
       <View style={styles.container}>
         {deck &&
@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state, { navigation }) {
-  console.log('mapstate', navigation)
   const { deck } = navigation.state.params
   return {
     deck

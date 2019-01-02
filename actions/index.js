@@ -9,10 +9,8 @@ export function handleInitialData() {
   return (dispatch) => {
     // console.log(dispatch)
     return getDecks()
-      .then((decks) => (
-        // console.log('decks', decks))
-        dispatch(receiveDecks(decks)))
-      )
+      .then(results => JSON.parse(results))
+      .then(decks => dispatch(receiveDecks(decks)))
   }
 }
 

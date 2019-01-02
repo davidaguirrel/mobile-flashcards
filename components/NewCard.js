@@ -26,7 +26,6 @@ class NewCard extends Component {
   submit = () => {
     const { dispatch, navigation } = this.props
     const title  = navigation.state.params.title
-    console.log(title)
     const { question, answer } = this.state
     const card = {
       question,

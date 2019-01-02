@@ -4,6 +4,7 @@ import MaterialTopTabNavigator from './MaterialTopTabNavigator'
 import BottomTabNavigator from './BottomTabNavigator'
 import DeckView from './DeckView'
 import NewCard from './NewCard'
+import Quiz from './Quiz'
 
 const StackNavigator = createStackNavigator({
   Home: {
@@ -20,6 +21,9 @@ const StackNavigator = createStackNavigator({
   },
   NewCard: {
     screen: NewCard
+  },
+  Quiz: {
+    screen: Quiz
   }
 })
 

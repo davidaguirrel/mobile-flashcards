@@ -14,7 +14,7 @@ class Dashboard extends Component {
   renderItem = ({ item }) => {
     const { navigation } = this.props
     const deck = item
-    console.log('deck', deck)
+
     return (
       <TouchableOpacity style={styles.deckList} onPress={() => navigation.navigate('DeckView', { deck })}>
         <Text style={styles.title}>

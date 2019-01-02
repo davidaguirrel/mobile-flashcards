@@ -43,10 +43,14 @@ const initialDeck = {
   }
 }
 
-// AsyncStorage.getItem(DECK_STORAGE_KEY)
-//   .then(results => console.log('reducers', results))
 
 function decks (state = initialDeck, action) {
+  formatTitle = (string) => (
+    string.replace(/\w+/g, (txt) => (
+      txt.charAt(0).toUpperCase() + txt.slice(1)
+    )).replace(/\s/g, '')
+  )
+
   switch (action.type) {
     case RECEIVE_DECKS : 
       return {
@@ -54,23 +58,20 @@ function decks (state = initialDeck, action) {
         ...action.decks
       }
     case SAVE_DECK :
-      let formattedTitle = action.title.replace(/\w+/g, (txt) => (
-        txt.charAt(0).toUpperCase() + txt.slice(1)
-      )).replace(/\s/g, '')
-
       return {
         ...state,
-        [formattedTitle]: {
+        [formatTitle(action.title)]: {
           title: action.title,
           questions: []
         }
       }
     case ADD_CARD_TO_DECK :
+      let formattedTitle = formatTitle(action.title)
       return {
         ...state,
-        [action.title]: {
-          ...state[action.title],
-          questions: state[action.title].questions.concat(action.card)
+        [formattedTitle]: {
+          ...state[formattedTitle],
+          questions: state[formattedTitle].questions.concat(action.card)
         }
       }
     default :
