@@ -40,11 +40,11 @@ class DeckView extends Component {
                   Start Quiz
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button}>
+              {/* <TouchableOpacity style={styles.button}>
                 <Text>
                   Delete Deck
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
         }

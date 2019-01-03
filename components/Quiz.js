@@ -18,6 +18,8 @@ class Quiz extends Component {
     correctIsPressed: false,
     incorrectIsPressed: false,
     quizComplete: false,
+    progress: 0,
+    correctAnswers: 0
   }
 
   componentDidMount() {
@@ -54,27 +56,33 @@ class Quiz extends Component {
       let scrollXPos = screenWidth * cardNum
       this.scroller.scrollTo({x: scrollXPos, y: 0})
   
-      this.setState({
+      this.setState(({ progress }) => ({
         cardNum: cardNum + 1,
-      })
+        progress: progress + 1
+      }))
     } else if (cardNum === questions.length) {
       this.setState({
-        quizComplete: true
+        quizComplete: true,
+        progress: questions.length
       })
     }
   }
 
   correctOnPressIn = () => {
-    this.setState(({correctIsPressed}) => ({
-      correctIsPressed: !correctIsPressed,
-      incorrectIsPressed: false
-    }))
+    const { quizComplete } = this.state
+    if (!quizComplete) {
+      this.setState(({ correctAnswers }) => ({
+        correctIsPressed: true,
+        incorrectIsPressed: false,
+        correctAnswers: correctAnswers + 1
+      }))
+    }
   }
   incorrectOnPressIn = () => {
-    this.setState(({incorrectIsPressed}) => ({
-      incorrectIsPressed: !incorrectIsPressed,
+    this.setState({
+      incorrectIsPressed: true,
       correctIsPressed: false
-    }))
+    })
   }
 
   // frontAnimatedStyle = (index) => (
@@ -90,7 +98,13 @@ class Quiz extends Component {
 
   render () {
     const { deck, questions } = this.props
-    const { flipValue, quizComplete, flipValues } = this.state
+    const { flipValue,
+      quizComplete,
+      flipValues,
+      progress,
+      correctIsPressed,
+      incorrectIsPressed,
+      correctAnswers } = this.state
 
     const frontOpacity = flipValue.interpolate({
       inputRange: [89, 90],
@@ -134,6 +148,12 @@ class Quiz extends Component {
       {questions.length > 0
         ? <View style={{alignItems: 'center'}}>
             <Text style={styles.title}>{deck.title}</Text>
+            <View style={styles.cardsLeft}>
+              <Text style={{fontSize: 20}}>Questions answered: {progress}/{questions.length}</Text>
+              {quizComplete &&
+                <Text style={{fontSize: 17}}>Correct answers: {correctAnswers}/{questions.length}</Text>
+              }
+            </View>
             <ScrollView
               horizontal
               scrollEnabled={quizComplete}
@@ -160,7 +180,7 @@ class Quiz extends Component {
                       onPress={this.scrollToNext}
                       style={[
                         styles.answerBtn,
-                        this.state.correctIsPressed ? {opacity: 1} : {opacity: 0.5},
+                        correctIsPressed ? {opacity: 1} : {opacity: 0.5},
                         {backgroundColor:'rgba(0, 170, 0, 0.9)',
                         }
                       ]}
@@ -172,7 +192,7 @@ class Quiz extends Component {
                       onPress={this.scrollToNext}
                       style={[
                         styles.answerBtn,
-                        this.state.incorrectIsPressed ? {opacity: 1} : {opacity: 0.5},
+                        incorrectIsPressed ? {opacity: 1} : {opacity: 0.5},
                         {backgroundColor:'rgba(255, 0, 0, 0.9)',
                         }
                       ]}
@@ -197,6 +217,11 @@ styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  cardsLeft: {
+    flex: 1,
+    alignSelf: 'flex-start',
+    marginLeft: 30
+  },
   contentContainer: {
     // flex: 1,
     justifyContent: 'center',
@@ -215,7 +240,7 @@ styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 50,
-    marginTop: 30
+    marginTop: 30,
   },
   question: {
     fontSize: 30,
