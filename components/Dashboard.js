@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, AsyncStorage } from 'react-native'
 import { handleInitialData } from '../actions'
+import { formatTitle } from '../utils/api'
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -16,7 +17,10 @@ class Dashboard extends Component {
     const deck = item
 
     return (
-      <TouchableOpacity style={styles.deckList} onPress={() => navigation.navigate('DeckView', { deck })}>
+      <TouchableOpacity
+        style={styles.deckList}
+        onPress={() => navigation.navigate('DeckView', formatTitle(deck.title))}
+      >
         <Text style={styles.title}>
           {deck.title}
         </Text>
@@ -38,11 +42,10 @@ class Dashboard extends Component {
               renderItem={this.renderItem}
               keyExtractor={item => item.title}
             />
-          : <TouchableOpacity style={styles.noDeck}>
-              <Text>
-                PLEASE CREATE A DECK
-              </Text>
-            </TouchableOpacity>
+          : 
+            <Text style={{fontSize: 20}}>
+              PLEASE CREATE A DECK
+            </Text>
         }
       </View>
     )
@@ -52,7 +55,7 @@ class Dashboard extends Component {
 const styles = StyleSheet.create({
   mainView: {
     flex: 1,
-    // justifyContent: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
     // backgroundColor: 'red'

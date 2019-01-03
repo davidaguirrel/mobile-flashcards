@@ -6,13 +6,12 @@ import { handleInitialData } from '../actions';
 class DeckView extends Component {
 
   addCard = () => {
-    // TODO: route to NewCard view
-    this.props.navigation.navigate('NewCard', this.props.navigation.state.params.deck)
+    this.props.navigation.navigate('NewCard', this.props.deckId)
   }
 
   startQuiz = () => {
     //TODO: START QUIZ FUNCTIONALITY
-    this.props.navigation.navigate('Quiz', this.props.navigation.state.params)
+    this.props.navigation.navigate('Quiz', this.props.deck)
   }
 
   render () {
@@ -83,10 +82,13 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps(state, { navigation }) {
-  const { deck } = navigation.state.params
+function mapStateToProps(decks, { navigation }) {
+  const deckId = navigation.state.params
+  console.log(deckId)
+
   return {
-    deck
+    deck: decks[deckId],
+    deckId
   }
 }
 

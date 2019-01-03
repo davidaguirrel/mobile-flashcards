@@ -15,16 +15,15 @@ const StackNavigator = createStackNavigator({
   },
   DeckView: {
     screen: DeckView,
-    navigationOptions: ({ navigation }) => ({
-      // header: null,
-    })
   },
   NewCard: {
-    screen: NewCard
+    screen: NewCard,
   },
   Quiz: {
     screen: Quiz
   }
+}, {
+  headerMode: Platform.OS === 'ios' ? 'float' : 'none',
 })
 
 export default StackNavigatorContainer = createAppContainer(StackNavigator)

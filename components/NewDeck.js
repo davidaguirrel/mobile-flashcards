@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { handleAddNewDeck } from '../actions'
 import { NavigationActions } from 'react-navigation'
 
@@ -28,7 +28,7 @@ class NewDeck extends Component {
 
   render () {
     return (
-      <View style={styles.mainView}>
+      <KeyboardAvoidingView behavior='padding' style={styles.mainView}>
         <Text style={styles.header}>
           Title of your new deck
         </Text>
@@ -46,7 +46,7 @@ class NewDeck extends Component {
           >
             <Text style={!this.state.newTitle ? {opacity: 0.4} : {}}>CREATE DECK</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

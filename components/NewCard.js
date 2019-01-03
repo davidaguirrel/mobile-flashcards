@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { Formik } from 'formik'
 import { handleAddCardToDeck, saveCard, handleInitialData } from '../actions';
 import { NavigationActions } from 'react-navigation'
@@ -25,7 +25,7 @@ class NewCard extends Component {
 
   submit = () => {
     const { dispatch, navigation } = this.props
-    const title  = navigation.state.params.title
+    const title  = navigation.state.params
     const { question, answer } = this.state
     const card = {
       question,
@@ -44,38 +44,36 @@ class NewCard extends Component {
 
   render () {
     return (
-      // <Formik>
-        <View style={styles.mainView}>
-          <View style={styles.title}>
-            <Text style={styles.newCard}>
-              ENTER NEW CARD INFO
-            </Text>
-          </View>
-          <View style={styles.form}>
-            <TextInput
-              onChangeText={(text) => this.handleQuestionChange(text)}
-              value={this.state.question}
-              placeholder='Enter a new question'
-              style={styles.textInput}
-              >
-            </TextInput>
-            <TextInput
-              value={this.state.answer}
-              onChangeText={(text) => this.handleAnswerChange(text)}
-              placeholder='Enter a new answer'
-              style={styles.textInput}
-              >
-            </TextInput>
-            <TouchableOpacity
-              style={[styles.submitBtn, !(this.state.question && this.state.answer) ? styles.submitDisabled : {}]}
-              disabled={!(this.state.question && this.state.answer)}
-              onPress={this.submit}
-              >
-                <Text style={!(this.state.question && this.state.answer) ? {opacity: 0.4} : {}}>SUBMIT</Text>
-            </TouchableOpacity>
-          </View>
+      <KeyboardAvoidingView behavior='padding' style={styles.mainView}>
+        <View style={styles.title}>
+          <Text style={styles.newCard}>
+            ENTER NEW CARD INFO
+          </Text>
         </View>
-      // </Formik>
+        <View style={styles.form}>
+          <TextInput
+            onChangeText={(text) => this.handleQuestionChange(text)}
+            value={this.state.question}
+            placeholder='Enter a new question'
+            style={styles.textInput}
+            >
+          </TextInput>
+          <TextInput
+            value={this.state.answer}
+            onChangeText={(text) => this.handleAnswerChange(text)}
+            placeholder='Enter a new answer'
+            style={styles.textInput}
+            >
+          </TextInput>
+          <TouchableOpacity
+            style={[styles.submitBtn, !(this.state.question && this.state.answer) ? styles.submitDisabled : {}]}
+            disabled={!(this.state.question && this.state.answer)}
+            onPress={this.submit}
+            >
+              <Text style={!(this.state.question && this.state.answer) ? {opacity: 0.4} : {}}>SUBMIT</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -124,5 +122,11 @@ const styles = StyleSheet.create({
   }
 })
 
+// function mapStateToProps(decks, {navigation}) {
+//   const deckId = navigation.state.params
+//   return {
+//     deck: decks[deckId]
+//   }
+// }
 
 export default connect()(NewCard)
