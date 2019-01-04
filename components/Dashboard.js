@@ -2,16 +2,18 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, AsyncStorage } from 'react-native'
 import { handleInitialData } from '../actions'
-import { formatTitle } from '../utils/api'
+import { formatTitle } from '../utils/helpers'
 
 class Dashboard extends Component {
   componentDidMount() {
     const { dispatch } = this.props
 
-    dispatch(handleInitialData())
-    // AsyncStorage.clear()
+    // Retrieve data stored in AsyncStorage if any
+    // dispatch(handleInitialData())
+    AsyncStorage.clear()
   }
 
+  // Specifies how to render each item in FlatList
   renderItem = ({ item }) => {
     const { navigation } = this.props
     const deck = item
@@ -19,14 +21,20 @@ class Dashboard extends Component {
     return (
       <TouchableOpacity
         style={styles.deckList}
+        // Navigate to a particular deck view passing the formatted title
         onPress={() => navigation.navigate('DeckView', formatTitle(deck.title))}
       >
         <Text style={styles.title}>
           {deck.title}
         </Text>
-        <Text style={styles.deckInfo}>
-          {deck.questions.length} cards
-        </Text>
+        {deck.questions.length === 1
+          ? <Text style={styles.deckInfo}>
+              {deck.questions.length} card
+            </Text>
+          : <Text style={styles.deckInfo}>
+              {deck.questions.length} cards
+            </Text>
+        }
       </TouchableOpacity>
     )
   }
@@ -36,6 +44,7 @@ class Dashboard extends Component {
 
     return (
       <View style={styles.mainView}>
+      {/* Renders a FlatList if there are decks to show */}
         {decks.length > 0
           ? <FlatList
               data={decks}
@@ -58,7 +67,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
-    // backgroundColor: 'red'
   },
   deckList: {
     flex: 1,
@@ -72,15 +80,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   title: {
-    // flex: 2,
     fontSize: 40
   },
   deckInfo: {
-    // flex: 1,
     fontSize: 25,
   },
   noDeck: {
-    // flex: 1,
     borderWidth: 1,
     borderRadius: 10,
     justifyContent: 'center',
@@ -92,8 +97,6 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps ( decks ) {
-  // console.log('TEST')
-  // console.log('mapState', decks)
   return {
     decks: decks && Object.keys(decks).reduce((acc, deck) => {
       return acc.concat(decks[deck])

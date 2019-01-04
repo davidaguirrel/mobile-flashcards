@@ -4,6 +4,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import Dashboard from './Dashboard'
 import NewDeck from './NewDeck'
 
+// Configuration of the bottom tab navigator that will be used for iOS
 const Tabs = createBottomTabNavigator({
   Home: {
     screen: Dashboard,

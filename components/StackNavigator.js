@@ -6,6 +6,7 @@ import DeckView from './DeckView'
 import NewCard from './NewCard'
 import Quiz from './Quiz'
 
+// Configuration of stack navigator
 const StackNavigator = createStackNavigator({
   Home: {
     screen: Platform.OS === 'ios' ? BottomTabNavigator : MaterialTopTabNavigator,
@@ -26,4 +27,5 @@ const StackNavigator = createStackNavigator({
   headerMode: Platform.OS === 'ios' ? 'float' : 'none',
 })
 
+// Creation of stack navigator
 export default StackNavigatorContainer = createAppContainer(StackNavigator)

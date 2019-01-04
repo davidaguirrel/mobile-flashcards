@@ -12,12 +12,21 @@ import {
 
 class Quiz extends Component {
   state = {
+    // Control flip animation for each card
     flipValue: new Animated.Value(0),
     flipValues: [],
+
+    // Controls the number of card displayed on screen to navigate to the corresponding one after answering
     cardNum: 1,
+
+    // Control styling of Correct/Incorrect buttons
     correctIsPressed: false,
     incorrectIsPressed: false,
+
+    // Controls if quiz is complete (all cards have been answered)
     quizComplete: false,
+
+    // Number of cards answered and number of correct ones
     progress: 0,
     correctAnswers: 0
   }
@@ -32,6 +41,7 @@ class Quiz extends Component {
     })
   }
 
+  // Animates only flipValue corresponding to the card that has been pressed
   viewAnswer = (index) => {
     console.log(index)
     const { flipValue, flipValues } = this.state
@@ -47,20 +57,25 @@ class Quiz extends Component {
     }
   }
 
+  // Navigates through the ScrollView fixing the position for correct presentation
   scrollToNext = () => {
     const screenWidth = Dimensions.get('window').width
     const { cardNum } = this.state
     const { questions } = this.props
 
+    // If quiz is not complete, free scroll navigation is disabled
     if(cardNum < questions.length) {
       let scrollXPos = screenWidth * cardNum
       this.scroller.scrollTo({x: scrollXPos, y: 0})
   
+      // Keeps track of answers and position in scroll navigation
       this.setState(({ progress }) => ({
         cardNum: cardNum + 1,
         progress: progress + 1
       }))
-    } else if (cardNum === questions.length) {
+    } 
+    // When quiz is complete, free navigation is enabled
+    else if (cardNum === questions.length) {
       this.setState({
         quizComplete: true,
         progress: questions.length
@@ -68,6 +83,7 @@ class Quiz extends Component {
     }
   }
 
+  // These 2 functions handle the styling of Correct/Incorrect buttons
   correctOnPressIn = () => {
     const { quizComplete } = this.state
     if (!quizComplete) {
@@ -106,6 +122,7 @@ class Quiz extends Component {
       incorrectIsPressed,
       correctAnswers } = this.state
 
+    // These 2 values make flip animation work in Android
     const frontOpacity = flipValue.interpolate({
       inputRange: [89, 90],
       outputRange: [1, 0]
@@ -115,6 +132,7 @@ class Quiz extends Component {
       outputRange: [0, 1]
     })
 
+    // These 2 values apply rotation to flipValue used for flipping cards
     const frontAnimatedStyle = {
       transform: [
         {
@@ -123,12 +141,8 @@ class Quiz extends Component {
             outputRange: ['0deg', '180deg']
           })
         },
-        // {
-        //   perspective: 1000
-        // }
       ]
     }
-
     const backAnimatedStyle = {
       transform: [
         {
@@ -137,9 +151,6 @@ class Quiz extends Component {
             outputRange: ['180deg', '360deg']
           })
         },
-        // {
-        //   perspective: 1000
-        // }
       ]
     }
 
@@ -156,6 +167,7 @@ class Quiz extends Component {
             </View>
             <ScrollView
               horizontal
+              // Only allow free scroll if quiz is complete
               scrollEnabled={quizComplete}
               contentContainerStyle={styles.contentContainer}
               ref={scroller => this.scroller = scroller}
@@ -170,7 +182,7 @@ class Quiz extends Component {
                     </Animated.View>
                     <Animated.View style={[styles.card, styles.flipCardBack, backAnimatedStyle, {opacity: backOpacity}]}>
                       <View style={styles.cardInfo}>
-                        <Text>{question.answer}</Text>
+                        <Text style={{fontSize: 20}}>{question.answer}</Text>
                       </View>
                     </Animated.View>
                   </TouchableOpacity>
@@ -223,17 +235,13 @@ styles = StyleSheet.create({
     marginLeft: 30
   },
   contentContainer: {
-    // flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
   },
   scroll: {
-    // justifyContent: 'center',
     alignItems: 'center',
     width: Dimensions.get('window').width
   },
   touchable: {
-    // justifyContent: 'center',
     alignItems: 'center',
     width:300,
   },

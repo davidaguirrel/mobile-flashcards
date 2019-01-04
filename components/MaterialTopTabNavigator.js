@@ -1,8 +1,8 @@
 import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation'
 import Dashboard from './Dashboard'
 import NewDeck from './NewDeck'
-import DeckView from './DeckView'
 
+// Configuration of the top bar navigator used for Android
 const MaterialTabs = createMaterialTopTabNavigator(
   {
     Home: {

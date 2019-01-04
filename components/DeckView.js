@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native'
-import { handleInitialData } from '../actions';
 
 class DeckView extends Component {
 
@@ -10,7 +9,6 @@ class DeckView extends Component {
   }
 
   startQuiz = () => {
-    //TODO: START QUIZ FUNCTIONALITY
     this.props.navigation.navigate('Quiz', this.props.deck)
   }
 
@@ -19,15 +17,23 @@ class DeckView extends Component {
 
     return (
       <View style={styles.container}>
+      {/* If deck exists, then render the following */}
         {deck &&
           <View>
             <View style={styles.deckInfo}>
               <Text style={{fontSize: 70, textAlign: 'center'}}>
                 {deck.title}
               </Text>
-              <Text style={{fontSize: 20}}>
-                {deck.questions.length} cards
-              </Text>
+              {deck.questions.length === 1
+                ?
+                  <Text style={{fontSize: 20}}>
+                    {deck.questions.length} card
+                  </Text>
+                :
+                  <Text style={{fontSize: 20}}>
+                    {deck.questions.length} cards
+                  </Text>
+              }
             </View>
             <View style={styles.deckMenu}>
               <TouchableOpacity style={[styles.button, {backgroundColor: 'white'}]} onPress={this.addCard}>
@@ -40,6 +46,7 @@ class DeckView extends Component {
                   Start Quiz
                 </Text>
               </TouchableOpacity>
+              {/* TODO: implement a Delete button */}
               {/* <TouchableOpacity style={styles.button}>
                 <Text>
                   Delete Deck
@@ -63,7 +70,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
-
   },
   deckMenu: {
     flex: 2,
@@ -84,7 +90,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(decks, { navigation }) {
   const deckId = navigation.state.params
-  console.log(deckId)
 
   return {
     deck: decks[deckId],

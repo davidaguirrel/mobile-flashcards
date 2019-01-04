@@ -1,16 +1,9 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { StyleSheet, Text, View, StatusBar } from 'react-native'
-import Dashboard from './components/Dashboard'
+import { StyleSheet, View, StatusBar } from 'react-native'
 import { createStore } from 'redux'
 import reducer from './reducers'
 import middleware from './middleware'
-import DeckView from './components/DeckView'
-import NewCard from './components/NewCard'
-import NewDeck from './components/NewDeck'
-import Quiz from './components/Quiz'
-import BottomTabNavigator from './components/BottomTabNavigator'
-import MaterialTopTabNavigator from './components/MaterialTopTabNavigator'
 import StackNavigatorContainer from './components/StackNavigator'
 import { Constants } from 'expo'
 
@@ -27,6 +20,7 @@ function AppStatusBar ({backgroundColor, ...props}) {
 export default class App extends React.Component {
   render() {
     return (
+      // Connect store to our app
       <Provider store={store}>
         <View style={styles.container}>
           <AppStatusBar barStyle='light-content' backgroundColor='blue'/>
@@ -42,6 +36,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'center',
-    // backgroundColor: 'gray'
   },
 })
