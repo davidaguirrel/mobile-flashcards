@@ -9,6 +9,7 @@ import {
   Animated,
   ScrollView
 } from 'react-native'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
 class Quiz extends Component {
   state = {
