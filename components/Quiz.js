@@ -74,12 +74,16 @@ class Quiz extends Component {
         progress: progress + 1
       }))
     } 
-    // When quiz is complete, free navigation is enabled
+    // When quiz is complete, free navigation is enabled.
+    // We clear notifications for that day and set up the new notification for the following day
     else if (cardNum === questions.length) {
       this.setState({
         quizComplete: true,
         progress: questions.length
       })
+
+      clearLocalNotification()
+      .then(setLocalNotification)
     }
   }
 

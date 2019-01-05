@@ -6,6 +6,7 @@ import reducer from './reducers'
 import middleware from './middleware'
 import StackNavigatorContainer from './components/StackNavigator'
 import { Constants } from 'expo'
+import { setLocalNotification } from './utils/helpers'
 
 const store = createStore(reducer, middleware)
 
@@ -18,6 +19,10 @@ function AppStatusBar ({backgroundColor, ...props}) {
 }
 
 export default class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
+  
   render() {
     return (
       // Connect store to our app
