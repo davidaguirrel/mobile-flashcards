@@ -10,6 +10,8 @@ import {
   ScrollView
 } from 'react-native'
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
+import { StackActions } from 'react-navigation'
+
 
 class Quiz extends Component {
   state = {
@@ -29,7 +31,7 @@ class Quiz extends Component {
 
     // Number of cards answered and number of correct ones
     progress: 0,
-    correctAnswers: 0
+    correctAnswers: 0,
   }
 
   componentDidMount() {
@@ -44,7 +46,6 @@ class Quiz extends Component {
 
   // Animates only flipValue corresponding to the card that has been pressed
   viewAnswer = (index) => {
-    console.log(index)
     const { flipValue, flipValues } = this.state
 
     if(flipValues[index]._value >= 90) {
@@ -61,8 +62,8 @@ class Quiz extends Component {
   // Navigates through the ScrollView fixing the position for correct presentation
   scrollToNext = () => {
     const screenWidth = Dimensions.get('window').width
-    const { cardNum } = this.state
-    const { questions } = this.props
+    const { cardNum, correctAnswers } = this.state
+    const { questions, navigation } = this.props
 
     // If quiz is not complete, free scroll navigation is disabled
     if(cardNum < questions.length) {
@@ -88,34 +89,40 @@ class Quiz extends Component {
     }
   }
 
+  // Exits quiz and goes back to individual deck view
+  exitQuiz = () => {
+    const { navigation } = this.props
+    const popAction = StackActions.pop({ n: 1 })
+
+    navigation.dispatch(popAction)
+  }
+
   // These 2 functions handle the styling of Correct/Incorrect buttons
   correctOnPressIn = () => {
-    const { quizComplete } = this.state
+    const { quizComplete, incorrectIsPressed } = this.state
     if (!quizComplete) {
       this.setState(({ correctAnswers }) => ({
         correctIsPressed: true,
-        incorrectIsPressed: false,
         correctAnswers: correctAnswers + 1
       }))
     }
+    if (incorrectIsPressed) {
+      this.setState({
+        incorrectIsPressed: false
+      })
+    }
   }
   incorrectOnPressIn = () => {
+    const { correctIsPressed } = this.state
     this.setState({
       incorrectIsPressed: true,
-      correctIsPressed: false
     })
+    if (correctIsPressed) {
+      this.setState({
+        correctIsPressed: false
+      })
+    }
   }
-
-  // frontAnimatedStyle = (index) => (
-  //   transform = [
-  //     {
-  //       rotateY: flipValues[index].interpolate({
-  //         inputRange: [0, 180],
-  //         outputRange: ['0deg', '180deg']
-  //       })
-  //     }
-  //   ]
-  // )
 
   render () {
     const { deck, questions } = this.props
@@ -167,7 +174,12 @@ class Quiz extends Component {
             <View style={styles.cardsLeft}>
               <Text style={{fontSize: 20}}>Questions answered: {progress}/{questions.length}</Text>
               {quizComplete &&
-                <Text style={{fontSize: 17}}>Correct answers: {correctAnswers}/{questions.length}</Text>
+                <View style={styles.quizDone}>
+                  <Text style={{fontSize: 20}}>Correct answers: {correctAnswers}/{questions.length}</Text>
+                  <TouchableOpacity style={styles.restartBtn} onPress={this.exitQuiz}>
+                    <Text style={styles.textRestart}>Exit Quiz</Text>
+                  </TouchableOpacity>
+                </View>
               }
             </View>
             <ScrollView
@@ -298,6 +310,22 @@ styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  quizDone: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  restartBtn: {
+    width: 150,
+    height: 50,
+    backgroundColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 2,
+  },
+  textRestart: {
+    fontSize: 20,
+    color: 'white'
+  }
 })
 
 function mapStateToProps (state, { navigation }) {
